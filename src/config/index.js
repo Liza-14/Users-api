@@ -4,6 +4,6 @@ dotenv.config();
 
 export const config = {
   db: {},
-  appPort: process.env.APP_PORT || 5000,
+  appPort: process.env.PORT || 5000,
 
 };
