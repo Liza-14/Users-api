@@ -13,6 +13,7 @@ module.exports = {
     sourceType: "module",
   },
   rules: {
+    "eslint-disable-next-line": "no-return-await",
     "linebreak-style": 0,
     semi: ["error", "always"],
     quotes: ["error", "double"],

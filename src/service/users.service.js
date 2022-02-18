@@ -1,4 +1,5 @@
 import { UsersRepository } from "../repositories/users.repository";
+import axios from "axios";
 
 class UsersService {
   constructor(repository) {
@@ -23,6 +24,12 @@ class UsersService {
 
   delete(id) {
     return this.repository.deleteUser(id);
+  }
+
+  async getAllCrimesByUserId(id) {
+    const params = { userId: id };
+    const url = "https://tranquil-taiga-07587.herokuapp.com/crimes";
+    return (await axios.get(url, { params })).data;
   }
 }
 
