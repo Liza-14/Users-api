@@ -11,7 +11,7 @@ export const options = {
         url: "http://localhost:5000",
       },
       {
-        url: "https://lit-retreat-93907.herokuapp.com/users",
+        url: "https://lit-retreat-93907.herokuapp.com",
       },
     ],
   },

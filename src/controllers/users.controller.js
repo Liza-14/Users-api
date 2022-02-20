@@ -44,3 +44,12 @@ export const removeById = async (req, res) => {
     res.status(500).json(e);
   }
 };
+
+export const getAllCrimesByUserId = async (req, res) => {
+  try {
+    await UsersService.get(req.params.id);
+    return res.status(200).send("Success!");
+  } catch (e) {
+    res.status(500).json(e);
+  }
+};
