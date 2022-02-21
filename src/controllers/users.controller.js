@@ -47,8 +47,17 @@ export const removeById = async (req, res) => {
 
 export const getAllCrimesByUserId = async (req, res) => {
   try {
-    await UsersService.get(req.params.id);
-    return res.status(200).send("Success!");
+    const crimes = await UsersService.getAllCrimesByUserId(req.params.id);
+    return res.status(200).json(crimes);
+  } catch (e) {
+    res.status(500).json(e);
+  }
+};
+
+export const addCrimes = async (req, res) => {
+  try {
+    const crime = await UsersService.addCrimes(req.params.id, req.body.policestationid, req.body.name, req.body.date, req.body.rate);
+    return res.status(200).json(crime);
   } catch (e) {
     res.status(500).json(e);
   }
