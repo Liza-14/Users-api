@@ -31,6 +31,12 @@ class UsersService {
     const url = "https://tranquil-taiga-07587.herokuapp.com/crimes";
     return (await axios.get(url, { params })).data;
   }
-}
+
+  async addCrimes(id, policestationid, name, date, rate) {
+    const params = { userid: id, policestationid, name, date, rate };
+    const url = "https://tranquil-taiga-07587.herokuapp.com/crimes";
+    return (await axios.post(url, null,{ params })).data;
+  }
+} 
 
 export default new UsersService(UsersRepository);

@@ -1,7 +1,7 @@
 import Router from "express";
 
 import {
-  getAll, addUser, removeById, updateUser, getOne,
+  getAll, addUser, removeById, updateUser, getOne, getAllCrimesByUserId, addCrimes,
 } from "../controllers/users.controller";
 
 export const usersRouter = new Router();
@@ -158,3 +158,55 @@ usersRouter.patch("/users/:id", updateUser);
  */
 
 usersRouter.delete("/users/:id", removeById);
+
+/**
+ * @swagger
+ * /users/{id}/crimes:
+ *   get:
+ *     summary: GET all user crimes by id
+ *     tags: [Users]
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         schema:
+ *           type: string
+ *         required: true
+ *         description: The user sees which crimes he has already added
+ *     responses:
+ *       200:
+ *         description: Crimes by user id
+ *         contens:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/Users'
+ *       404:
+ *         description: The crimes was not found
+ */
+
+ usersRouter.get("/users/:id/crimes", getAllCrimesByUserId);
+
+ /**
+ * @swagger
+ * /users/{id}/crimes:
+ *   get:
+ *     summary: POST user crime item
+ *     tags: [Users]
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         schema:
+ *           type: string
+ *         required: true
+ *         description: users id
+ *     responses:
+ *       200:
+ *         description: Add new crime
+ *         contens:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/Users'
+ *       404:
+ *         description: The crimes was not found
+ */
+
+  usersRouter.post("/users/:id/crimes", addCrimes);
