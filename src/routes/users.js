@@ -183,9 +183,9 @@ usersRouter.delete("/users/:id", removeById);
  *         description: The crimes was not found
  */
 
- usersRouter.get("/users/:id/crimes", getAllCrimesByUserId);
+usersRouter.get("/users/:id/crimes", getAllCrimesByUserId);
 
- /**
+/**
  * @swagger
  * /users/{id}/crimes:
  *   get:
@@ -209,4 +209,4 @@ usersRouter.delete("/users/:id", removeById);
  *         description: The crimes was not found
  */
 
-  usersRouter.post("/users/:id/crimes", addCrimes);
+usersRouter.post("/users/:id/crimes", addCrimes);

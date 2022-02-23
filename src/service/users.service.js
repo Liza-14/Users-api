@@ -1,9 +1,10 @@
-import { UsersRepository } from "../repositories/users.repository";
 import axios from "axios";
+import { UsersRepository } from "../repositories/users.repository";
 
 class UsersService {
   constructor(repository) {
     this.repository = repository;
+    this.axios = axios;
   }
 
   async getAll() {
@@ -15,7 +16,7 @@ class UsersService {
   }
 
   create(id, name) {
-    this.repository.addUser(id, name);
+    return this.repository.addUser(id, name);
   }
 
   update(name, id) {
@@ -29,14 +30,16 @@ class UsersService {
   async getAllCrimesByUserId(id) {
     const params = { userId: id };
     const url = "https://tranquil-taiga-07587.herokuapp.com/crimes";
-    return (await axios.get(url, { params })).data;
+    return (await this.axios.get(url, { params })).data;
   }
 
-  async addCrimes(id, policestationid, name, date, rate) {
-    const params = { userid: id, policestationid, name, date, rate };
+  async addCrimes(id, policestationid, name, date, rate, key) {
+    const params = {
+      userid: id, policestationid, name, date, rate, key,
+    };
     const url = "https://tranquil-taiga-07587.herokuapp.com/crimes";
-    return (await axios.post(url, null,{ params })).data;
+    return (await this.axios.post(url, null, { params })).data;
   }
-} 
+}
 
 export default new UsersService(UsersRepository);
