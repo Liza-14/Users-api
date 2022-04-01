@@ -33,9 +33,9 @@ class UsersService {
     return (await this.axios.get(url, { params })).data;
   }
 
-  async addCrimes(id, policestationid, name, date, rate, key) {
+  async addCrimes(id, policestationid, name, date, rate) {
     const params = {
-      userid: id, policestationid, name, date, rate, key,
+      userid: id, policestationid, name, date, rate,
     };
     const url = "https://tranquil-taiga-07587.herokuapp.com/crimes";
     return (await this.axios.post(url, null, { params })).data;

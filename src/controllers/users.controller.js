@@ -43,7 +43,6 @@ export const addCrimes = async (req, res, next) => {
     req.body.name,
     req.body.date,
     req.body.rate,
-    req.body.key,
   )
     .then((data) => res.status(200).json(data))
     .catch((err) => next(err));

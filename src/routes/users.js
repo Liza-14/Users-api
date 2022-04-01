@@ -1,4 +1,5 @@
 import Router from "express";
+import { allowAnyUser, allowOnlyPolice } from "../middlewares/auth";
 
 import {
   getAll, addUser, removeById, updateUser, getOne, getAllCrimesByUserId, addCrimes,
@@ -9,6 +10,11 @@ export const usersRouter = new Router();
 /**
  * @swagger
  * components:
+ *   securitySchemes:
+ *       bearerAuth:
+ *           type: http
+ *           scheme: bearer
+ *           bearerFormat: JWT
  *   schemas:
  *      Users:
  *        type: object
@@ -17,13 +23,13 @@ export const usersRouter = new Router();
  *            - name
  *        properties:
  *            id:
- *              type: number
+ *              type: string
  *              description: ID of user
  *            name:
  *              type: string
  *              description: name user
  *        example:
- *            id: 57
+ *            id: 2be14ab0-94b1-11ec-9416-c799b3364e70
  *            name: Ivan
  */
 
@@ -39,6 +45,8 @@ export const usersRouter = new Router();
  * /users:
  *   get:
  *     summary:  get all users
+ *     security:
+ *       - bearerAuth: []
  *     tags: [Users]
  *     responses:
  *       200:
@@ -51,13 +59,15 @@ export const usersRouter = new Router();
  *                 $ref: '#/components/schemas/Users'
  */
 
-usersRouter.get("/users", getAll);
+usersRouter.get("/users", allowOnlyPolice, getAll);
 
 /**
  * @swagger
  * /users:
  *   post:
  *     summary: Adds user
+ *     security:
+ *       - bearerAuth: []
  *     tags: [Users]
  *     requestBody:
  *       required: true
@@ -76,13 +86,15 @@ usersRouter.get("/users", getAll);
  *         description: Server error
  */
 
-usersRouter.post("/users", addUser);
+usersRouter.post("/users", allowAnyUser, addUser);
 
 /**
   * @swagger
   * /users/{id}:
   *   get:
   *     summary: get user by id
+  *     security:
+  *      - bearerAuth: []
   *     tags: [Users]
   *     parameters:
   *       - in: path
@@ -102,13 +114,15 @@ usersRouter.post("/users", addUser);
   *         description: Users was not found
   */
 
-usersRouter.get("/users/:id", getOne);
+usersRouter.get("/users/:id", allowAnyUser, getOne);
 
 /**
  * @swagger
  * /users/{id}:
  *  patch:
  *    summary: update user by id
+ *    security:
+ *     - bearerAuth: []
  *    tags: [Users]
  *    parameters:
  *      - in: path
@@ -134,13 +148,15 @@ usersRouter.get("/users/:id", getOne);
  *        description: Users was not found
  */
 
-usersRouter.patch("/users/:id", updateUser);
+usersRouter.patch("/users/:id", allowAnyUser, updateUser);
 
 /**
  * @swagger
  * /users/{id}:
  *   delete:
  *     summary: delete user by id
+ *     security:
+ *      - bearerAuth: []
  *     tags: [Users]
  *     parameters:
  *       - in: path
@@ -157,13 +173,15 @@ usersRouter.patch("/users/:id", updateUser);
  *         description: User was not found
  */
 
-usersRouter.delete("/users/:id", removeById);
+usersRouter.delete("/users/:id", allowAnyUser, removeById);
 
 /**
  * @swagger
  * /users/{id}/crimes:
  *   get:
  *     summary: GET all user crimes by id
+ *     security:
+ *       - bearerAuth: []
  *     tags: [Users]
  *     parameters:
  *       - in: path
@@ -183,13 +201,15 @@ usersRouter.delete("/users/:id", removeById);
  *         description: The crimes was not found
  */
 
-usersRouter.get("/users/:id/crimes", getAllCrimesByUserId);
+usersRouter.get("/users/:id/crimes", allowAnyUser, getAllCrimesByUserId);
 
 /**
  * @swagger
  * /users/{id}/crimes:
  *   get:
  *     summary: POST user crime item
+ *     security:
+ *       - bearerAuth: []
  *     tags: [Users]
  *     parameters:
  *       - in: path
@@ -209,4 +229,4 @@ usersRouter.get("/users/:id/crimes", getAllCrimesByUserId);
  *         description: The crimes was not found
  */
 
-usersRouter.post("/users/:id/crimes", addCrimes);
+usersRouter.post("/users/:id/crimes", allowAnyUser, addCrimes);
