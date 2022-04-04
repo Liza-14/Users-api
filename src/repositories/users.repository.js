@@ -19,10 +19,10 @@ export class UsersRepository {
     return user;
   }
 
-  static async addUser(id, name) {
+  static async addUser(user) {
     const client = createConection();
     await client.connect();
-    await client.execute(`INSERT INTO ${USERS_TABLE} (id, name) VALUES ( ?, ?)`, [id, name], { prepare: true });
+    await client.execute(`INSERT INTO ${USERS_TABLE} (id, name, email, password) VALUES ( ?, ?, ?, ?)`, user, { prepare: true });
     await client.shutdown();
   }
 

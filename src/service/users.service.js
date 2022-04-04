@@ -1,4 +1,5 @@
 import axios from "axios";
+import { v4 as uuid } from "uuid";
 import { UsersRepository } from "../repositories/users.repository";
 
 class UsersService {
@@ -15,8 +16,8 @@ class UsersService {
     return (await this.repository.getOne(id)).rows;
   }
 
-  create(id, name) {
-    return this.repository.addUser(id, name);
+  create(user) {
+    return this.repository.addUser({ id: uuid(), ...user });
   }
 
   update(name, id) {
