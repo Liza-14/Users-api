@@ -14,7 +14,7 @@ export const getOne = async (req, res, next) => {
 
 export const addUser = async (req, res, next) => {
   UsersService.create(req.body)
-    .then(() => res.status(200).send("Success!"))
+    .then((id) => res.status(200).json(id))
     .catch((err) => next(err));
 };
 

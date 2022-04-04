@@ -16,8 +16,10 @@ class UsersService {
     return (await this.repository.getOne(id)).rows;
   }
 
-  create(user) {
-    return this.repository.addUser({ id: uuid(), ...user });
+  async create(user) {
+    const userWithId = { id: uuid(), ...user };
+    await this.repository.addUser(userWithId);
+    return { ...userWithId, password: undefined };
   }
 
   update(name, id) {
