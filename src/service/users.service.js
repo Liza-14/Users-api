@@ -40,6 +40,15 @@ class UsersService {
     const url = "https://tranquil-taiga-07587.herokuapp.com/crimes";
     return (await this.axios.post(url, null, { params })).data;
   }
+
+  async verify(email, password) {
+    const user = await this.repository.getOneByEmail(email);
+    const verified = user && user.password === password;
+    return {
+      verified,
+      id: verified ? user.id : null,
+    };
+  }
 }
 
 export default new UsersService(UsersRepository);

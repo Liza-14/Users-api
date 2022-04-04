@@ -2,7 +2,7 @@ import Router from "express";
 import { allowAnyUser, allowOnlyPolice } from "../middlewares/auth";
 
 import {
-  getAll, addUser, removeById, updateUser, getOne, getAllCrimesByUserId, addCrimes,
+  getAll, addUser, removeById, updateUser, getOne, getAllCrimesByUserId, addCrimes, verify,
 } from "../controllers/users.controller";
 
 export const usersRouter = new Router();
@@ -86,7 +86,7 @@ usersRouter.get("/users", allowOnlyPolice, getAll);
  *         description: Server error
  */
 
-usersRouter.post("/users", allowAnyUser, addUser);
+usersRouter.post("/users", addUser);
 
 /**
   * @swagger
@@ -230,3 +230,5 @@ usersRouter.get("/users/:id/crimes", allowAnyUser, getAllCrimesByUserId);
  */
 
 usersRouter.post("/users/:id/crimes", allowAnyUser, addCrimes);
+
+usersRouter.post("/users/verify", verify);

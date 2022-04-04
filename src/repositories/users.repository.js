@@ -41,4 +41,17 @@ export class UsersRepository {
     client.shutdown();
     return users;
   }
+
+  static async getOneByEmail(email) {
+    const client = createConection();
+    client.connect();
+    const user = (await client.execute(
+      `SELECT * FROM ${USERS_TABLE} WHERE email = ? ALLOW FILTERING`,
+      [email],
+      { prepare: true },
+    ))
+      .rows[0];
+    client.shutdown();
+    return user;
+  }
 }
