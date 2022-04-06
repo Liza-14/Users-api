@@ -13,6 +13,9 @@ export const getOne = async (req, res, next) => {
 };
 
 export const addUser = async (req, res, next) => {
+  console.log(req.get("origin"));
+  console.log(req.get("host"));
+  console.log(req.socket.remoteAddress);
   UsersService.create(req.body)
     .then((id) => res.status(200).json(id))
     .catch((err) => next(err));
