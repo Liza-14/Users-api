@@ -2,7 +2,7 @@ import Router from "express";
 import { allowAnyUser, allowOnlyPolice } from "../middlewares/auth";
 
 import {
-  getAll, addUser, removeById, updateUser, getOne, getAllCrimesByUserId, addCrimes, verify,
+  getAll, addUser, removeById, updateUser, getOne, getAllCrimesByUserId, addCrimes,
 } from "../controllers/users.controller";
 
 export const usersRouter = new Router();
@@ -230,5 +230,3 @@ usersRouter.get("/users/:id/crimes", allowAnyUser, getAllCrimesByUserId);
  */
 
 usersRouter.post("/users/:id/crimes", allowAnyUser, addCrimes);
-
-usersRouter.post("/users/verify", verify);

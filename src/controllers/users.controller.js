@@ -47,11 +47,3 @@ export const addCrimes = async (req, res, next) => {
     .then((data) => res.status(200).json(data))
     .catch((err) => next(err));
 };
-
-export const verify = async (req, res, next) => {
-  UsersService.verify(req.body.email, req.body.password)
-    .then((result) => (result.verified
-      ? res.status(200).json(result)
-      : res.status(404).json(result)))
-    .catch((err) => next(err));
-};
