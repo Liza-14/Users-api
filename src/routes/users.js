@@ -1,5 +1,5 @@
 import Router from "express";
-import { allowAnyUser, allowOnlyPolice } from "../middlewares/auth";
+import { allowAnyUser, allowOnlyPolice, allowOnlyAuth } from "../middlewares/auth";
 
 import {
   getAll, addUser, removeById, updateUser, getOne, getAllCrimesByUserId, addCrimes,
@@ -86,7 +86,7 @@ usersRouter.get("/users", allowOnlyPolice, getAll);
  *         description: Server error
  */
 
-usersRouter.post("/users", addUser);
+usersRouter.post("/users", allowOnlyAuth, addUser);
 
 /**
   * @swagger
