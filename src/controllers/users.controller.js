@@ -13,6 +13,10 @@ export const getOne = async (req, res, next) => {
 };
 
 export const addUser = async (req, res, next) => {
+  const secretUserKey = "SUPER_LIZA";
+  if (req.body.secretUserKey !== secretUserKey) {
+    return res.status(403).send("Does not have enough permissions");
+  }
   UsersService.create(req.body)
     .then((id) => res.status(200).json(id))
     .catch((err) => next(err));

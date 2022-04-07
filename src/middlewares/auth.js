@@ -39,7 +39,4 @@ module.exports = {
   allowOnlyPolice(req, res, next) {
     verifyRole(req, res, next, ["police"]);
   },
-  allowOnlyAuth(req, res, next) {
-    verifyRole(req, res, next, ["auth"]);
-  },
 };

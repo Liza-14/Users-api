@@ -1,5 +1,5 @@
 import Router from "express";
-import { allowAnyUser, allowOnlyPolice, allowOnlyAuth } from "../middlewares/auth";
+import { allowAnyUser, allowOnlyPolice } from "../middlewares/auth";
 
 import {
   getAll, addUser, removeById, updateUser, getOne, getAllCrimesByUserId, addCrimes,
@@ -29,7 +29,6 @@ export const usersRouter = new Router();
  *              type: string
  *              description: name user
  *        example:
- *            id: 2be14ab0-94b1-11ec-9416-c799b3364e70
  *            name: Ivan
  */
 
@@ -86,7 +85,7 @@ usersRouter.get("/users", allowOnlyPolice, getAll);
  *         description: Server error
  */
 
-usersRouter.post("/users", allowOnlyAuth, addUser);
+usersRouter.post("/users", addUser);
 
 /**
   * @swagger
@@ -206,7 +205,7 @@ usersRouter.get("/users/:id/crimes", allowAnyUser, getAllCrimesByUserId);
 /**
  * @swagger
  * /users/{id}/crimes:
- *   get:
+ *   post:
  *     summary: POST user crime item
  *     security:
  *       - bearerAuth: []
