@@ -19,7 +19,7 @@ class UsersService {
   async create(user) {
     const userWithId = { id: uuid(), ...user };
     await this.repository.addUser(userWithId);
-    return user;
+    return userWithId;
   }
 
   update(name, id) {
