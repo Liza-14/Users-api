@@ -77,7 +77,7 @@ export const usersRouter = new Router();
  *       500:
  *         description: Unexpected error
  */
-usersRouter.get("/users", allowOnlyPolice, getAll);
+usersRouter.get("/users", allowOnlyPolice, verifyToken, getAll);
 
 /**
  * @swagger
@@ -201,7 +201,7 @@ usersRouter.patch("/users/:id", allowAnyUser, verifyToken, updateUser);
  *       500:
  *         description: Unexpected error
  */
-usersRouter.delete("/users/:id", allowAnyUser, removeById);
+usersRouter.delete("/users/:id", allowAnyUser, verifyToken, removeById);
 
 /**
  * @swagger
