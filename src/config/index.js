@@ -16,5 +16,5 @@ export const config = {
   crimes: {
     url: process.env.CRIMES_URL,
   },
-  appPort: process.env.APP_PORT || 5000,
+  appPort: process.env.PORT || 5000,
 };
