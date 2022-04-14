@@ -1,5 +1,6 @@
 import Router from "express";
 import { allowAnyUser, allowOnlyPolice } from "../middlewares/auth";
+import { verifyToken } from "../middlewares/authService";
 
 import {
   getAll, addUser, removeById, updateUser, getOne, getAllCrimesByUserId, addCrimes,
@@ -69,16 +70,14 @@ export const usersRouter = new Router();
  *               type: array
  *               items:
  *                 $ref: '#/components/schemas/Users'
- *       400:
- *         description: Bad request
  *       401:
  *         description: User not authorized
  *       403:
- *         description: Access denied
+ *         description: Forbidden
  *       500:
  *         description: Unexpected error
  */
-usersRouter.get("/users", allowOnlyPolice, getAll);
+usersRouter.get("/users", allowOnlyPolice, verifyToken, getAll);
 
 /**
  * @swagger
@@ -106,7 +105,7 @@ usersRouter.get("/users", allowOnlyPolice, getAll);
  *       401:
  *         description: User not authorized
  *       403:
- *         description: Access denied
+ *         description: Forbidden
  *       500:
  *         description: Unexpected error
  */
@@ -134,16 +133,14 @@ usersRouter.post("/users", addUser);
  *           application/json:
  *             schema:
  *               $ref: '#/components/schemas/Users'
- *       400:
- *         description: Bad request
  *       401:
  *         description: User not authorized
  *       403:
- *         description: Access denied
+ *         description: Forbidden
  *       500:
  *         description: Unexpected error
  */
-usersRouter.get("/users/:id", allowAnyUser, getOne);
+usersRouter.get("/users/:id", allowAnyUser, verifyToken, getOne);
 
 /**
  * @swagger
@@ -176,7 +173,7 @@ usersRouter.get("/users/:id", allowAnyUser, getOne);
  *      404:
  *        description: Users was not found
  */
-usersRouter.patch("/users/:id", allowAnyUser, updateUser);
+usersRouter.patch("/users/:id", allowAnyUser, verifyToken, updateUser);
 
 /**
  * @swagger
@@ -197,16 +194,14 @@ usersRouter.patch("/users/:id", allowAnyUser, updateUser);
  *     responses:
  *       200:
  *         description: User deleted
- *       400:
- *         description: Bad request
  *       401:
  *         description: User not authorized
  *       403:
- *         description: Access denied
+ *         description: Forbidden
  *       500:
  *         description: Unexpected error
  */
-usersRouter.delete("/users/:id", allowAnyUser, removeById);
+usersRouter.delete("/users/:id", allowAnyUser, verifyToken, removeById);
 
 /**
  * @swagger
@@ -230,16 +225,14 @@ usersRouter.delete("/users/:id", allowAnyUser, removeById);
  *           application/json:
  *             schema:
  *               $ref: '#/components/schemas/Users'
- *       400:
- *         description: Bad request
  *       401:
  *         description: User not authorized
  *       403:
- *         description: Access denied
+ *         description: Forbidden
  *       500:
  *         description: Unexpected error
  */
-usersRouter.get("/users/:id/crimes", allowAnyUser, getAllCrimesByUserId);
+usersRouter.get("/users/:id/crimes", allowAnyUser, verifyToken, getAllCrimesByUserId);
 
 /**
  * @swagger
@@ -269,13 +262,11 @@ usersRouter.get("/users/:id/crimes", allowAnyUser, getAllCrimesByUserId);
  *           application/json:
  *             schema:
  *               $ref: '#/components/schemas/Users'
- *       400:
- *         description: Bad request
  *       401:
  *         description: User not authorized
  *       403:
- *         description: Access denied
+ *         description: Forbidden
  *       500:
  *         description: Unexpected error
  */
-usersRouter.post("/users/:id/crimes", allowAnyUser, addCrimes);
+usersRouter.post("/users/:id/crimes", allowAnyUser, verifyToken, addCrimes);

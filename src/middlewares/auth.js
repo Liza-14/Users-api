@@ -1,7 +1,6 @@
 const jwt = require("jsonwebtoken");
 const JsonWebTokenError = require("jsonwebtoken/lib/JsonWebTokenError");
-
-const secret = "8Zz5tw0Ionm3XPZZfN0NOml3z9FMfmpgXwovR9fp6ryDIoGRM8EPHAB6iHsc0fb";
+const { config } = require("../config/index");
 
 function verifyRole(req, res, next, roles) {
   const token = req.headers.authorization?.split(" ")[1];
@@ -11,7 +10,7 @@ function verifyRole(req, res, next, roles) {
   }
 
   try {
-    const payload = jwt.verify(token, secret);
+    const payload = jwt.verify(token, config.auth.secretKey);
 
     if (payload.exp > Date.now() / 1000) {
       if (roles.includes(payload.role)) {

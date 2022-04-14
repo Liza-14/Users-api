@@ -1,4 +1,5 @@
 import UsersService from "../service/users.service";
+import { config } from "../config/index";
 
 export const getAll = async (req, res, next) => {
   UsersService.getAll()
@@ -13,9 +14,12 @@ export const getOne = async (req, res, next) => {
 };
 
 export const addUser = async (req, res, next) => {
-  const secretUserKey = "SUPER_LIZA";
-  if (req.body.secretUserKey !== secretUserKey) {
+  if (req.body.secretUserKey !== config.auth.secretUserKey) {
     return res.status(403).send("Does not have enough permissions");
+  }
+  const { name } = req.body;
+  if (!name || name === "") {
+    return res.status(400).send("Invalid request body");
   }
   UsersService.create({ ...req.body, secretUserKey: undefined })
     .then((userWithId) => res.status(200).json(userWithId))
@@ -24,7 +28,7 @@ export const addUser = async (req, res, next) => {
 
 export const updateUser = async (req, res, next) => {
   UsersService.update(req.body.name, req.params.id)
-    .then(() => res.status(200).send("Success!"))
+    .then((data) => res.status(200).json(data))
     .catch((err) => next(err));
 };
 

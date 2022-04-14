@@ -1,6 +1,6 @@
 import axios from "axios";
-import { v4 as uuid } from "uuid";
 import { UsersRepository } from "../repositories/users.repository";
+import { config } from "../config/index";
 
 class UsersService {
   constructor(repository) {
@@ -17,9 +17,7 @@ class UsersService {
   }
 
   async create(user) {
-    const userWithId = { id: uuid(), ...user };
-    await this.repository.addUser(userWithId);
-    return userWithId;
+    return await this.repository.addUser(user);
   }
 
   update(name, id) {
@@ -32,16 +30,14 @@ class UsersService {
 
   async getAllCrimesByUserId(id) {
     const params = { userId: id };
-    const url = "https://tranquil-taiga-07587.herokuapp.com/crimes";
-    return (await this.axios.get(url, { params })).data;
+    return (await this.axios.get(config.crimes.url, { params })).data;
   }
 
   async addCrimes(id, policestationid, name, date, rate) {
-    const params = {
+    const body = {
       userid: id, policestationid, name, date, rate,
     };
-    const url = "https://tranquil-taiga-07587.herokuapp.com/crimes";
-    return (await this.axios.post(url, null, { params })).data;
+    return (await this.axios.post(config.crimes.url, body)).data;
   }
 }
 
