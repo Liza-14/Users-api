@@ -26,7 +26,7 @@ export class UsersRepository {
     const userWithId = { id: TimeUuid.now().toString(), ...user };
     const client = createConection();
     await client.connect();
-    await client.execute(`INSERT INTO ${USERS_TABLE} (id, name) VALUES (now(), ?)`, userWithId, { prepare: true });
+    await client.execute(`INSERT INTO ${USERS_TABLE} (id, name) VALUES (?, ?)`, userWithId, { prepare: true });
     await client.shutdown();
     return userWithId;
   }
