@@ -1,11 +1,11 @@
-import casandra from "cassandra-driver";
-import createConection from "../../connect-database";
+const casandra = require("cassandra-driver");
+const createConection = require("../connect-database");
 
 const { TimeUuid } = casandra.types;
 
 const USERS_TABLE = "users.Users";
 
-export class UsersRepository {
+class UsersRepository {
   static async getAll() {
     const client = createConection();
     await client.connect();
@@ -47,3 +47,5 @@ export class UsersRepository {
     return users;
   }
 }
+
+module.exports = { UsersRepository };

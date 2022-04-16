@@ -4,9 +4,8 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "build": "babel src -d dist",
-    "start": "./node_modules/.bin/babel-node ./dist/index.js",
-    "dev": "nodemon --exec babel-node src/index.js",
+    "start": "node src/index.js",
+    "dev": "nodemon --exec node src/index.js",
     "lint": "eslint src",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
@@ -29,10 +28,6 @@
     "winston": "^3.6.0"
   },
   "devDependencies": {
-    "@babel/cli": "^7.17.0",
-    "@babel/core": "^7.17.2",
-    "@babel/node": "^7.16.8",
-    "@babel/preset-env": "^7.16.11",
     "eslint": "^8.9.0",
     "nodemon": "^2.0.15"
   }

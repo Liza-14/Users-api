@@ -1,12 +1,12 @@
-import Router from "express";
-import { allowAnyUser, allowOnlyPolice } from "../middlewares/auth";
-import { verifyToken } from "../middlewares/authService";
+const Router = require("express");
+const { allowAnyUser, allowOnlyPolice } = require("../middlewares/auth");
+const { verifyToken } = require("../middlewares/authService");
 
-import {
+const {
   getAll, addUser, removeById, updateUser, getOne, getAllCrimesByUserId, addCrimes,
-} from "../controllers/users.controller";
+} = require("../controllers/users.controller");
 
-export const usersRouter = new Router();
+const usersRouter = new Router();
 
 /**
  * @swagger
@@ -270,3 +270,5 @@ usersRouter.get("/users/:id/crimes", allowAnyUser, verifyToken, getAllCrimesByUs
  *         description: Unexpected error
  */
 usersRouter.post("/users/:id/crimes", allowAnyUser, verifyToken, addCrimes);
+
+module.exports = { usersRouter };

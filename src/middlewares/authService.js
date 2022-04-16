@@ -1,7 +1,7 @@
-import axios from "axios";
-import { config } from "../config/index";
+const axios = require("axios");
+const config = require("../config/index");
 
-export function verifyToken(req, res, next) {
+function verifyToken(req, res, next) {
   const accessToken = req.headers.authorization?.split(" ")[1];
 
   if (!accessToken) {
@@ -17,3 +17,5 @@ export function verifyToken(req, res, next) {
     })
     .catch((error) => next(error));
 }
+
+module.exports = { verifyToken };

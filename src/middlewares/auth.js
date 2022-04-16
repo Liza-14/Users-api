@@ -1,6 +1,6 @@
 const jwt = require("jsonwebtoken");
 const JsonWebTokenError = require("jsonwebtoken/lib/JsonWebTokenError");
-const { config } = require("../config/index");
+const config = require("../config/index");
 
 function verifyRole(req, res, next, roles) {
   const token = req.headers.authorization?.split(" ")[1];

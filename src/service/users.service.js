@@ -1,6 +1,6 @@
-import axios from "axios";
-import { UsersRepository } from "../repositories/users.repository";
-import { config } from "../config/index";
+const axios = require("axios");
+const config = require("../config/index");
+const { UsersRepository } = require("../repositories/users.repository");
 
 class UsersService {
   constructor(repository) {
@@ -41,4 +41,4 @@ class UsersService {
   }
 }
 
-export default new UsersService(UsersRepository);
+module.exports = new UsersService(UsersRepository);

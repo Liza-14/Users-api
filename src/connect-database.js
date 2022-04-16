@@ -1,5 +1,5 @@
-import { Client } from "cassandra-driver";
-import { config } from "./src/config/index";
+const { Client } = require("cassandra-driver");
+const config = require("./config/index");
 
 function createConection() {
   return new Client({
@@ -13,4 +13,4 @@ function createConection() {
   });
 }
 
-export default createConection;
+module.exports = createConection;

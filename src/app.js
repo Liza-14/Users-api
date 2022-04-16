@@ -1,15 +1,14 @@
-import { usersRouter } from "./routes/users";
-import { config } from "./config";
-import { options } from "../swagger-config";
-import { logger } from "./logger";
-
 const express = require("express");
 const bodyParser = require("body-parser");
 const cors = require("cors");
 const swaggerUI = require("swagger-ui-express");
 const swaggerJsDoc = require("swagger-jsdoc");
+const { logger } = require("./logger");
+const { options } = require("../swagger-config");
+const config = require("./config");
+const { usersRouter } = require("./routes/users");
 
-export const bootstrap = () => {
+const bootstrap = () => {
   const app = express();
   app.use(cors());
   app.use(bodyParser.urlencoded({ extended: false }));
@@ -37,3 +36,5 @@ export const bootstrap = () => {
 
   app.listen(config.appPort);
 };
+
+module.exports = { bootstrap };
