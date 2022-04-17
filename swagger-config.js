@@ -13,6 +13,9 @@ const options = {
       {
         url: "https://lit-retreat-93907.herokuapp.com",
       },
+      {
+        url: "https://my-guard.herokuapp.com",
+      },
     ],
   },
   components: {
