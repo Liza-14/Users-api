@@ -1,4 +1,4 @@
-export const options = {
+const options = {
   definition: {
     openapi: "3.0.0",
     info: {
@@ -13,7 +13,25 @@ export const options = {
       {
         url: "https://lit-retreat-93907.herokuapp.com",
       },
+      {
+        url: "https://my-guard.herokuapp.com",
+      },
     ],
   },
+  components: {
+    securitySchemes: {
+      jwt: {
+        type: "http",
+        scheme: "bearer",
+        in: "header",
+        bearerFormat: "JWT",
+      },
+    },
+  },
+  security: [{
+    jwt: [],
+  }],
   apis: ["./src/routes/users.js"],
 };
+
+module.exports = { options };

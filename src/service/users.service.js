@@ -1,5 +1,6 @@
-import axios from "axios";
-import { UsersRepository } from "../repositories/users.repository";
+const axios = require("axios");
+const config = require("../config/index");
+const { UsersRepository } = require("../repositories/users.repository");
 
 class UsersService {
   constructor(repository) {
@@ -15,8 +16,8 @@ class UsersService {
     return (await this.repository.getOne(id)).rows;
   }
 
-  create(id, name) {
-    return this.repository.addUser(id, name);
+  async create(user) {
+    return await this.repository.addUser(user);
   }
 
   update(name, id) {
@@ -29,17 +30,15 @@ class UsersService {
 
   async getAllCrimesByUserId(id) {
     const params = { userId: id };
-    const url = "https://tranquil-taiga-07587.herokuapp.com/crimes";
-    return (await this.axios.get(url, { params })).data;
+    return (await this.axios.get(config.crimes.url, { params })).data;
   }
 
-  async addCrimes(id, policestationid, name, date, rate, key) {
-    const params = {
-      userid: id, policestationid, name, date, rate, key,
+  async addCrimes(id, policestationid, name, date, rate) {
+    const body = {
+      userid: id, policestationid, name, date, rate,
     };
-    const url = "https://tranquil-taiga-07587.herokuapp.com/crimes";
-    return (await this.axios.post(url, null, { params })).data;
+    return (await this.axios.post(config.crimes.url, body)).data;
   }
 }
 
-export default new UsersService(UsersRepository);
+module.exports = new UsersService(UsersRepository);

@@ -1,14 +1,21 @@
-import Router from "express";
+const Router = require("express");
+const { allowAnyUser, allowOnlyPolice } = require("../middlewares/auth");
+const { verifyToken } = require("../middlewares/authService");
 
-import {
+const {
   getAll, addUser, removeById, updateUser, getOne, getAllCrimesByUserId, addCrimes,
-} from "../controllers/users.controller";
+} = require("../controllers/users.controller");
 
-export const usersRouter = new Router();
+const usersRouter = new Router();
 
 /**
  * @swagger
  * components:
+ *   securitySchemes:
+ *       bearerAuth:
+ *           type: http
+ *           scheme: bearer
+ *           bearerFormat: JWT
  *   schemas:
  *      Users:
  *        type: object
@@ -17,14 +24,26 @@ export const usersRouter = new Router();
  *            - name
  *        properties:
  *            id:
- *              type: number
+ *              type: string
  *              description: ID of user
  *            name:
  *              type: string
  *              description: name user
  *        example:
- *            id: 57
- *            name: Ivan
+ *            name: Kate
+ *      addCrimes:
+ *        type: object
+ *        required:
+ *            - id
+ *        properties:
+ *            id:
+ *              type: string
+ *              description: ID of user
+ *        example:
+ *            policestationid: 163a800c-90ae-11ec-b909-0242ac120002
+ *            name: Murder
+ *            date: 30.03.2022
+ *            rate: 10
  */
 
 /**
@@ -38,26 +57,35 @@ export const usersRouter = new Router();
  * @swagger
  * /users:
  *   get:
- *     summary:  get all users
+ *     summary:  Get all users
+ *     security:
+ *       - bearerAuth: []
  *     tags: [Users]
  *     responses:
  *       200:
- *         description: Get all users
+ *         description: The list of the users
  *         content:
  *           application/json:
  *             schema:
  *               type: array
  *               items:
  *                 $ref: '#/components/schemas/Users'
+ *       401:
+ *         description: User not authorized
+ *       403:
+ *         description: Forbidden
+ *       500:
+ *         description: Unexpected error
  */
-
-usersRouter.get("/users", getAll);
+usersRouter.get("/users", allowOnlyPolice, verifyToken, getAll);
 
 /**
  * @swagger
  * /users:
  *   post:
  *     summary: Adds user
+ *     security:
+ *       - bearerAuth: []
  *     tags: [Users]
  *     requestBody:
  *       required: true
@@ -67,54 +95,66 @@ usersRouter.get("/users", getAll);
  *             $ref: '#/components/schemas/Users'
  *     responses:
  *       200:
- *         description: user created
+ *         description: The user was successfully created
  *         content:
  *           application/json:
  *             schema:
  *               $ref: '#/components/schemas/Users'
+ *       400:
+ *         description: Bad request
+ *       401:
+ *         description: User not authorized
+ *       403:
+ *         description: Forbidden
  *       500:
- *         description: Server error
+ *         description: Unexpected error
  */
-
 usersRouter.post("/users", addUser);
 
 /**
-  * @swagger
-  * /users/{id}:
-  *   get:
-  *     summary: get user by id
-  *     tags: [Users]
-  *     parameters:
-  *       - in: path
-  *         name: id
-  *         schema:
-  *           type: number
-  *         required: true
-  *         description: Get user from the system
-  *     responses:
-  *       200:
-  *         description: Get user by id
-  *         contens:
-  *           application/json:
-  *             schema:
-  *               $ref: '#/components/schemas/Users'
-  *       404:
-  *         description: Users was not found
-  */
-
-usersRouter.get("/users/:id", getOne);
+ * @swagger
+ * /users/{id}:
+ *   get:
+ *     summary: Get user by id
+ *     security:
+ *      - bearerAuth: []
+ *     tags: [Users]
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         schema:
+ *           type: string
+ *         required: true
+ *         description: Get user from the system
+ *     responses:
+ *       200:
+ *         description: Get user by id
+ *         contens:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/Users'
+ *       401:
+ *         description: User not authorized
+ *       403:
+ *         description: Forbidden
+ *       500:
+ *         description: Unexpected error
+ */
+usersRouter.get("/users/:id", allowAnyUser, verifyToken, getOne);
 
 /**
  * @swagger
  * /users/{id}:
  *  patch:
- *    summary: update user by id
+ *    summary: Update user by id
+ *    security:
+ *     - bearerAuth: []
  *    tags: [Users]
  *    parameters:
  *      - in: path
  *        name: id
  *        schema:
- *          type: number
+ *          type: string
  *        required: true
  *        description: User to update
  *    requestBody:
@@ -125,7 +165,7 @@ usersRouter.get("/users/:id", getOne);
  *            $ref: '#/components/schemas/Users'
  *    responses:
  *      200:
- *        description: user update
+ *        description: User was updated
  *        content:
  *          application/json:
  *            schema:
@@ -133,37 +173,43 @@ usersRouter.get("/users/:id", getOne);
  *      404:
  *        description: Users was not found
  */
-
-usersRouter.patch("/users/:id", updateUser);
+usersRouter.patch("/users/:id", allowAnyUser, verifyToken, updateUser);
 
 /**
  * @swagger
  * /users/{id}:
  *   delete:
- *     summary: delete user by id
+ *     summary: Delete user by id
+ *     security:
+ *      - bearerAuth: []
  *     tags: [Users]
  *     parameters:
  *       - in: path
  *         name: id
  *         schema:
- *           type: number
+ *           type: string
  *         required: true
  *         description: Deletes user from the system
  *
  *     responses:
  *       200:
  *         description: User deleted
- *       404:
- *         description: User was not found
+ *       401:
+ *         description: User not authorized
+ *       403:
+ *         description: Forbidden
+ *       500:
+ *         description: Unexpected error
  */
-
-usersRouter.delete("/users/:id", removeById);
+usersRouter.delete("/users/:id", allowAnyUser, verifyToken, removeById);
 
 /**
  * @swagger
  * /users/{id}/crimes:
  *   get:
- *     summary: GET all user crimes by id
+ *     summary: Get all user crimes by id
+ *     security:
+ *       - bearerAuth: []
  *     tags: [Users]
  *     parameters:
  *       - in: path
@@ -179,17 +225,22 @@ usersRouter.delete("/users/:id", removeById);
  *           application/json:
  *             schema:
  *               $ref: '#/components/schemas/Users'
- *       404:
- *         description: The crimes was not found
+ *       401:
+ *         description: User not authorized
+ *       403:
+ *         description: Forbidden
+ *       500:
+ *         description: Unexpected error
  */
-
-usersRouter.get("/users/:id/crimes", getAllCrimesByUserId);
+usersRouter.get("/users/:id/crimes", allowAnyUser, verifyToken, getAllCrimesByUserId);
 
 /**
  * @swagger
  * /users/{id}/crimes:
- *   get:
- *     summary: POST user crime item
+ *   post:
+ *     summary: Post user crime item
+ *     security:
+ *       - bearerAuth: []
  *     tags: [Users]
  *     parameters:
  *       - in: path
@@ -198,6 +249,12 @@ usersRouter.get("/users/:id/crimes", getAllCrimesByUserId);
  *           type: string
  *         required: true
  *         description: users id
+ *     requestBody:
+ *      required: true
+ *      content:
+ *        application/json:
+ *            schema:
+ *               $ref: '#/components/schemas/addCrimes'
  *     responses:
  *       200:
  *         description: Add new crime
@@ -205,8 +262,13 @@ usersRouter.get("/users/:id/crimes", getAllCrimesByUserId);
  *           application/json:
  *             schema:
  *               $ref: '#/components/schemas/Users'
- *       404:
- *         description: The crimes was not found
+ *       401:
+ *         description: User not authorized
+ *       403:
+ *         description: Forbidden
+ *       500:
+ *         description: Unexpected error
  */
+usersRouter.post("/users/:id/crimes", allowAnyUser, verifyToken, addCrimes);
 
-usersRouter.post("/users/:id/crimes", addCrimes);
+module.exports = { usersRouter };

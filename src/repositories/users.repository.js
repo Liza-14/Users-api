@@ -1,8 +1,11 @@
-import createConection from "../../connect-database";
+const casandra = require("cassandra-driver");
+const createConection = require("../connect-database");
+
+const { TimeUuid } = casandra.types;
 
 const USERS_TABLE = "users.Users";
 
-export class UsersRepository {
+class UsersRepository {
   static async getAll() {
     const client = createConection();
     await client.connect();
@@ -19,19 +22,21 @@ export class UsersRepository {
     return user;
   }
 
-  static async addUser(id, name) {
+  static async addUser(user) {
+    const userWithId = { id: TimeUuid.now().toString(), ...user };
     const client = createConection();
     await client.connect();
-    await client.execute(`INSERT INTO ${USERS_TABLE} (id, name) VALUES ( ?, ?)`, [id, name], { prepare: true });
+    await client.execute(`INSERT INTO ${USERS_TABLE} (id, name) VALUES (?, ?)`, userWithId, { prepare: true });
     await client.shutdown();
+    return userWithId;
   }
 
-  static updateUser(name, id) {
+  static async updateUser(name, id) {
     const client = createConection();
     client.connect();
-    const users = client.execute(`UPDATE ${USERS_TABLE} SET name = ? WHERE id = ?`, [name, id], { prepare: true });
+    await client.execute(`UPDATE ${USERS_TABLE} SET name = ? WHERE id = ?`, [name, id], { prepare: true });
     client.shutdown();
-    return users;
+    return (await this.getOne(id)).rows[0];
   }
 
   static deleteUser(id) {
@@ -42,3 +47,5 @@ export class UsersRepository {
     return users;
   }
 }
+
+module.exports = { UsersRepository };
