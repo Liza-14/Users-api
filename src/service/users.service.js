@@ -33,9 +33,9 @@ class UsersService {
     return (await this.axios.get(config.crimes.url, { params })).data;
   }
 
-  async addCrimes(id, policestationid, name, date, rate) {
+  async addCrimes(id, policeStationId, name, date, rate) {
     const body = {
-      userid: id, policestationid, name, date, rate,
+      userId: id, policeStationId, name, date, rate,
     };
     return (await this.axios.post(config.crimes.url, body)).data;
   }
