@@ -82,8 +82,8 @@ paths:
           description: Forbidden
         500:
           description: Unexpected error
-       security:
-       - bearerAuth: []
+      security:
+      - bearerAuth: []
     patch:
       tags:
       - Users
@@ -113,8 +113,8 @@ paths:
           description: Forbidden
         500:
           description: Unexpected error
-       security:
-       - bearerAuth: []
+      security:
+      - bearerAuth: []
     delete:
       tags:
       - Users
@@ -135,8 +135,8 @@ paths:
           description: Forbidden
         500:
           description: Unexpected error
-       security:
-       - bearerAuth: []
+      security:
+      - bearerAuth: []
   /users/{id}/crimes:
     get:
       tags:
@@ -162,8 +162,8 @@ paths:
           description: Forbidden
         500:
           description: Unexpected error
-       security:
-       - bearerAuth: []
+      security:
+      - bearerAuth: []
     post:
       tags:
       - Users
@@ -194,8 +194,8 @@ paths:
           description: Forbidden
         500:
           description: Unexpected error
-       security:
-       - bearerAuth: []
+      security:
+      - bearerAuth: []
   components:
     securitySchemes:
         bearerAuth:
