@@ -1,0 +1,233 @@
+swagger: '2.0'
+info:
+  title: My Guard
+  version: 1.0.0
+  description: Users API
+servers:
+- url: https://my-guard.herokuapp.com 
+tags:
+- name: Users
+  description: Users managing API
+paths:
+  /users:
+    get:
+      tags:
+      - Users
+      summary: Get all users
+      description: Get users
+      responses:
+       200:
+         description: The list of the users
+         content:
+           application/json:
+             schema:
+               type: array
+               items:
+                 $ref: '#/components/schemas/Users'
+       401:
+         description: User not authorized
+       403:
+         description: Forbidden
+       500:
+         description: Unexpected error
+      security:
+      - bearerAuth: []
+    post:
+      tags:
+      - Users
+      summary: Adds user
+      description: Adds users
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Users'
+        required: true
+      responses:
+        200:
+          description: The user was successfully created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Users'
+        401:
+          description: User not authorized
+        403:
+          description: Forbidden
+        500:
+          description: Unexpected error
+      security:
+      - bearerAuth: []
+  /users/{id}:
+    get:
+      tags:
+      - Users
+      summary: Get user by id
+      description: Get user from the system
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: timeuuid
+       responses:
+        200:
+          description: Get user by id
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Users'
+        401:
+          description: User not authorized
+        403:
+          description: Forbidden
+        500:
+          description: Unexpected error
+       security:
+       - bearerAuth: []
+    patch:
+      tags:
+      - Users
+      summary: Update user by id
+      description: User to update
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: timeuuid
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Users'
+       responses:
+        200:
+          description: User was updated
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Users'
+        401:
+          description: User not authorized
+        403:
+          description: Forbidden
+        500:
+          description: Unexpected error
+       security:
+       - bearerAuth: []
+    delete:
+      tags:
+      - Users
+      summary: Delete user by id
+      description: Deletes user from the system
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: timeuuid
+        required: true
+       responses:
+        200:
+          description: User deleted
+        401:
+          description: User not authorized
+        403:
+          description: Forbidden
+        500:
+          description: Unexpected error
+       security:
+       - bearerAuth: []
+  /users/{id}/crimes:
+    get:
+      tags:
+      - Users
+      summary: Get all user crimes by id
+      description: The user sees which crimes he has already added
+      parameters:
+      - in: path
+        name: id
+        required: true
+        schema:
+          type: timeuuid
+       responses:
+        200:
+          description: Crimes by user id
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Users'
+        401:
+          description: User not authorized
+        403:
+          description: Forbidden
+        500:
+          description: Unexpected error
+       security:
+       - bearerAuth: []
+    post:
+      tags:
+      - Users
+      summary: Post user crime item
+      description: Post user crime item
+      parameters:
+      - in: path
+        name: id
+        required: true
+        schema:
+          type: timeuuid
+      requestBody:
+        required: true
+        content:
+          application/json:
+              schema:
+                 $ref: '#/components/schemas/addCrimes'
+       responses:
+        200:
+          description: Add new crime
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Users'
+        401:
+          description: User not authorized
+        403:
+          description: Forbidden
+        500:
+          description: Unexpected error
+       security:
+       - bearerAuth: []
+  components:
+    securitySchemes:
+        bearerAuth:
+            type: http
+            scheme: bearer
+            bearerFormat: JWT
+    schemas:
+       Users:
+         type: object
+         required:
+             - id
+             - name
+         properties:
+             id:
+               type: timeuuid
+               description: ID of user
+             name:
+               type: string
+               description: name user
+         example:
+             name: Kate
+       addCrimes:
+         type: object
+         required:
+             - id
+         properties:
+             id:
+               type: timeuuid
+               description: ID of user
+         example:
+             policestationid: 163a800c-90ae-11ec-b909-0242ac120002
+             name: Murder
+             date: 30.03.2022
+             rate: 10
+      
